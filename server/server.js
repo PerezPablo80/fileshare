@@ -4,6 +4,7 @@ const app = express();
 const port = 3002;
 const fs = require("fs");
 const dotenv = require("dotenv").config();
+let fileFolder = process.env.FILE_FOLDER;
 app.use(express.json());
 //How to handle CORS for all.
 app.use(function (req, res, next) {
@@ -13,7 +14,7 @@ app.use(function (req, res, next) {
 });
 
 app.get("/", (req, res) => {
-	let newpath = __dirname + "/files";
+	let newpath = __dirname + fileFolder;
 	var f = [];
 	var files = fs.readdirSync(newpath);
 	files.forEach((file) => {
@@ -25,7 +26,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/file/:fileName", (req, res) => {
-	let newpath = __dirname + "/files/";
+	let newpath = __dirname + fileFolder + "/";
 	var f = [];
 	var file = req.params.fileName;
 	res.download(newpath + file, file, function (err) {
@@ -40,7 +41,7 @@ app.post("/", (req, res) => {
 	var form = new formidable.IncomingForm();
 	form.parse(req, function (err, fields, files) {
 		let oldpath = files.file.filepath;
-		let newpath = __dirname + "/files/" + files.file.originalFilename; // si la ubicacion de index no es la raiz, se debe usar process.cwd()
+		let newpath = __dirname + fileFolder + "/" + files.file.originalFilename; // si la ubicacion de index no es la raiz, se debe usar process.cwd()
 		fs.copyFile(oldpath, newpath, function (err) {
 			if (err) throw err;
 			res.send({ status: "ok", msg: "Archivo ingresado correctamente" });
@@ -61,7 +62,7 @@ app.post("/validate", (req, res) => {
 });
 
 app.post("/file/:fileName", (req, res) => {
-	let newpath = __dirname + "/files/";
+	let newpath = __dirname + fileFolder + "/";
 	var file = req.params.fileName;
 	let user = req.body.user;
 	let psd = req.body.password;

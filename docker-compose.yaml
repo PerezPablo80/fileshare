@@ -1,0 +1,29 @@
+version: "3.3"
+services:
+  # Client with React
+  client:
+    container_name: ReactClient
+    build: ./client
+    command: npm start
+    ports:
+      - "3002:3002"
+    environment:
+      PORT: "3002"
+      REACT_APP_URL: "http://localhost:3002"
+      NODE_ENV: "development"
+  # Server
+  server:
+    container_name: serverNode
+    build: ./server
+    volumes:
+      - ./files:/app/src/files
+    command: node ./server.js
+    ports:
+      - "3000:3000"
+    environment:
+      PORT: "3000"
+      USER: "123"
+      PASSWORD: "123"
+      FILE_FOLDER: "/files"
+volumes:
+  persistent: null
