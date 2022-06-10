@@ -2,8 +2,8 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
-  "browser":{
-    "fs":false,
+  "browser": {
+    "fs": false,
     "path": false,
     "os": false
   },
