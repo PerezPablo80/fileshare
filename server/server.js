@@ -3,15 +3,15 @@ const formidable = require("formidable");
 const app = express();
 const port = 3002;
 const fs = require("fs");
-// const cors = require("cors");
-// app.use(cors);
+const dotenv = require("dotenv").config();
 app.use(express.json());
+//How to handle CORS for all.
 app.use(function (req, res, next) {
 	res.header("Access-Control-Allow-Origin", "*");
 	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 	next();
 });
-//https://stackabuse.com/handling-cors-with-node-js/
+
 app.get("/", (req, res) => {
 	let newpath = __dirname + "/files";
 	var f = [];
@@ -21,7 +21,6 @@ app.get("/", (req, res) => {
 			f.push(file);
 		}
 	});
-	// console.log("voy a enviar:", JSON.stringify(f));
 	res.send(JSON.stringify(f));
 });
 
@@ -34,12 +33,8 @@ app.get("/file/:fileName", (req, res) => {
 			// Handle error, but keep in mind the response may be partially-sent
 			// so check res.headersSent
 			console.log("ERROR:", err);
-		} else {
-			console.log("sin error?");
-			// decrement a download credit, etc.
 		}
 	});
-	// res.send(file);
 });
 app.post("/", (req, res) => {
 	var form = new formidable.IncomingForm();
@@ -54,15 +49,15 @@ app.post("/", (req, res) => {
 	});
 });
 app.post("/validate", (req, res) => {
-	console.log(req.body);
 	let user = req.body.user;
 	let psd = req.body.password;
 	if (user == psd && user == "123") {
+		console.log("Is Valid");
 		res.send({ user, res: true });
 	} else {
+		console.log("Is Invalid :: ", user);
 		res.send({ user, res: false });
 	}
-	// console.log("user:" + user);
 });
 
 app.post("/file/:fileName", (req, res) => {
@@ -70,7 +65,7 @@ app.post("/file/:fileName", (req, res) => {
 	var file = req.params.fileName;
 	let user = req.body.user;
 	let psd = req.body.password;
-	if (user == psd && user == "123") {
+	if (user == psd && user == process.env.USER) {
 		res.download(newpath + file, file, function (err) {
 			if (err) {
 				// Handle error, but keep in mind the response may be partially-sent
