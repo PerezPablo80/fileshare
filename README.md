@@ -1,4 +1,4 @@
-# H1 Fileshare
+#  Fileshare
 Example of how to use a folder for file shareing in a server and access it with React.
 
 You have two folders:
@@ -10,12 +10,12 @@ The client is a React app consisting in two pages:
 - Upload a file
 - Download files
 
-# H2 On the server
+##  On the server
 <div>The folder for storing files is <span style="color:red">/files</span></div>
 If you want to change it, just modify the env variable
 
-# H3 How to start everything.
-# H4 Without Docker
+###  How to start everything.
+####  Without Docker
 There are two ways to start everything.
 If you don't use Docker, just open two consoles:
 
@@ -32,7 +32,7 @@ On the second one:
 With this, the URL will pop up automatically, but if you didn't change any port, the url should be:
 http://localhost:3002
 
-# H4 With Docker
+#### With Docker
 If you have docker installed (and docker-compose), just:
 - go to the root folder
 - docker-compose build (if needed sudo docker-compose build)
